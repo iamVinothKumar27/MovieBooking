@@ -58,16 +58,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveBooking(movie: String, timingSpinner: Spinner, ticketsSpinner: Spinner, theatreSpinner: Spinner, poster: Int) {
+        val timing = timingSpinner.selectedItem.toString()
+        val tickets = ticketsSpinner.selectedItem.toString()
+        val theatre = theatreSpinner.selectedItem.toString()
+
+        // Save to SharedPreferences
+        val prefs = getSharedPreferences("bookingData", MODE_PRIVATE)
+        with(prefs.edit()) {
+            putString("movie", movie)
+            putString("timing", timing)
+            putString("tickets", tickets)
+            putString("theatre", theatre)
+            putInt("poster", poster)
+            apply()
+        }
+
         val dbHelper = BookingDatabaseHelper(this)
-        dbHelper.insertBooking(
-            movie,
-            timingSpinner.selectedItem.toString(),
-            ticketsSpinner.selectedItem.toString(),
-            theatreSpinner.selectedItem.toString(),
-            poster
-        )
+        dbHelper.insertBooking(movie, timing, tickets, theatre, poster)
+
         startActivity(Intent(this, Booking::class.java))
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
