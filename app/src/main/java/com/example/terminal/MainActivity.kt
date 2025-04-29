@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
     private val theatres = arrayOf(
         "INOX Madurai", "Vetri Cinemas Villapuram", "Vetri Cinemas Mattuthavani",
         "Gopuram Cinemas", "Priya Complex", "Ganesh Theatre",
-        "Jazz & arsh cinemas", "Ritz Banu Cinemas", "Shanmuga theatre", "Thanga Regal"
+        "Jazz & Arsh Cinemas", "Ritz Banu Cinemas", "Shanmuga Theatre", "Thanga Regal"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,17 +58,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveBooking(movie: String, timingSpinner: Spinner, ticketsSpinner: Spinner, theatreSpinner: Spinner, poster: Int) {
-        val prefs = getSharedPreferences("bookingData", MODE_PRIVATE)
-        prefs.edit().apply {
-            putString("movie", movie)
-            putString("timing", timingSpinner.selectedItem.toString())
-            putString("tickets", ticketsSpinner.selectedItem.toString())
-            putString("theatre", theatreSpinner.selectedItem.toString())
-            putInt("poster", poster)
-            apply()
-        }
+        val dbHelper = BookingDatabaseHelper(this)
+        dbHelper.insertBooking(
+            movie,
+            timingSpinner.selectedItem.toString(),
+            ticketsSpinner.selectedItem.toString(),
+            theatreSpinner.selectedItem.toString(),
+            poster
+        )
         startActivity(Intent(this, Booking::class.java))
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -77,11 +77,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_exit -> {
-                finishAffinity() // exits the app completely
+                finishAffinity()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }
