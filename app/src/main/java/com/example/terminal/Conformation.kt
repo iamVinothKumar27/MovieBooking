@@ -15,11 +15,17 @@ class Conformation : AppCompatActivity() {
         val dbHelper = BookingDatabaseHelper(this)
         val booking = dbHelper.getLastBooking()
 
-        val textViewConfirmation = findViewById<TextView>(R.id.textViewConfirmation)
+        val textMovie = findViewById<TextView>(R.id.textMovie)
+        val textTiming = findViewById<TextView>(R.id.textTiming)
+        val textTickets = findViewById<TextView>(R.id.textTickets)
+        val textTheatre = findViewById<TextView>(R.id.textTheatre)
         val imagePosterConfirm = findViewById<ImageView>(R.id.imagePosterConfirm)
 
         if (booking != null) {
-            textViewConfirmation.text = "🎬 Movie: ${booking.movie}\n🕓 Timing: ${booking.timing}\n🎟️ Tickets: ${booking.tickets}\n📍 Theatre: ${booking.theatre}"
+            textMovie.text = "Movie: ${booking.movie}"
+            textTiming.text = "Timing: ${booking.timing}"
+            textTickets.text = "Tickets: ${booking.tickets}"
+            textTheatre.text = "Theatre: ${booking.theatre}"
             imagePosterConfirm.setImageResource(booking.poster)
         } else {
             Toast.makeText(this, "No booking found", Toast.LENGTH_SHORT).show()
